@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/fiber":"^8",
+    "@types/three": "^0.169.0",
     "next": "^15.0.0-canary.173",
-    "react": "^19.0.0-rc-2d16326d-20240930",
-    "react-dom": "^19.0.0-rc-2d16326d-20240930"
+    "react": "^18",
+    "react-dom": "^18",
+    "three": "^0.169.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0-alpha.25",
