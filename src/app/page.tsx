@@ -1,28 +1,15 @@
 "use client";
 
-import * as THREE from "three";
-import React, { useRef, useState } from "react";
-import { Canvas, useFrame, ThreeElements } from "@react-three/fiber";
+import React from "react";
+import { Canvas, ThreeElements } from "@react-three/fiber";
+import { useGLTF, OrbitControls } from "@react-three/drei";
 
-const Box = (props: ThreeElements["mesh"]) => {
-  const meshRef = useRef<THREE.Mesh>(null!);
-  const [hovered, setHover] = useState(false);
-  const [active, setActive] = useState(false);
-  useFrame((state, delta) => (meshRef.current.rotation.x += delta));
-  return (
-    <mesh
-      {...props}
-      ref={meshRef}
-      scale={active ? 1.5 : 1}
-      onClick={(event) => setActive(!active)}
-      onPointerOver={(event) => setHover(true)}
-      onPointerOut={(event) => setHover(false)}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? "hotpink" : "#2f74c0"} />
-    </mesh>
-  );
+const Model = (props: ThreeElements["group"]) => {
+  const { scene } = useGLTF("clay.glb");
+  return <primitive object={scene} {...props} />;
 };
+
+useGLTF.preload("clay.glb");
 
 export default function Home() {
   return (
@@ -36,8 +23,8 @@ export default function Home() {
         intensity={Math.PI}
       />
       <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-      <Box position={[-1.2, 0, 0]} />
-      <Box position={[1.2, 0, 0]} />
+      <Model position={[0, 0, 0]} scale={[2, 2, 2]} />
+      <OrbitControls />
     </Canvas>
   );
 }
