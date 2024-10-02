@@ -5,11 +5,11 @@ import { Canvas, ThreeElements } from "@react-three/fiber";
 import { useGLTF, OrbitControls } from "@react-three/drei";
 
 const Model = (props: ThreeElements["group"]) => {
-  const { scene } = useGLTF("clay.glb");
+  const { scene } = useGLTF("clay-shader.gltf");
   return <primitive object={scene} {...props} />;
 };
 
-useGLTF.preload("clay.glb");
+useGLTF.preload("clay-shader.gltf");
 
 export default function Home() {
   return (
