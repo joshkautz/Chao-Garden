@@ -13,7 +13,7 @@ import * as THREE from "three";
 const Sphere = (props: ThreeElements["mesh"]) => {
   const geometry = new THREE.SphereGeometry(1, 64, 64);
   const material = new THREE.MeshStandardMaterial({
-    color: "tan",
+    color: new THREE.Color("#254228"),
     metalness: 0.0,
   });
 
