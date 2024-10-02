@@ -1,23 +1,22 @@
 "use client";
 
 import React from "react";
-import { Canvas, ThreeElements } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import {
   OrbitControls,
   PerspectiveCamera,
   Stats,
   StatsGl,
 } from "@react-three/drei";
-import * as THREE from "three";
 
-const Sphere = (props: ThreeElements["mesh"]) => {
-  const geometry = new THREE.SphereGeometry(1, 64, 64);
-  const material = new THREE.MeshStandardMaterial({
-    color: new THREE.Color("#254228"),
-    metalness: 0.0,
-  });
-
-  return <mesh geometry={geometry} material={material} {...props} />;
+const Sphere = () => {
+  return (
+    <mesh position={[0, 0, 0]} scale={[2, 2, 2]}>
+      <sphereGeometry args={[1, 64, 64]} />
+      {/* <meshStandardMaterial color="#254228" metalness={0.0} /> */}
+      <meshPhysicalMaterial color="#254228" metalness={0.0} ior={1.45} />
+    </mesh>
+  );
 };
 
 export default function Home() {
@@ -27,7 +26,7 @@ export default function Home() {
       <ambientLight intensity={Math.PI / 4} />
       <pointLight position={[10, 10, -10]} decay={0} intensity={Math.PI} />
 
-      <Sphere position={[0, 0, 0]} scale={[2, 2, 2]} />
+      <Sphere />
 
       <OrbitControls />
       <gridHelper />
