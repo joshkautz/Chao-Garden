@@ -1,13 +1,12 @@
 "use client";
 
 import React from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import {
   OrbitControls,
   PerspectiveCamera,
   Stats,
   StatsGl,
-  useTexture,
 } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -38,8 +37,10 @@ const addSphereGeometryDisplacement = (geometry: THREE.SphereGeometry) => {
 };
 
 const Sphere = () => {
-  const fingerprintNormalMap = useTexture("Fingerprints01_3K.png");
-  const displacementMap = useTexture("displacementMap.jpg");
+  const [bumpMap, displacementMap] = useLoader(THREE.TextureLoader, [
+    "Fingerprints01_3K_Bump.png",
+    "displacementMap.jpg",
+  ]);
 
   const iterations = 2;
 
@@ -71,7 +72,7 @@ const Sphere = () => {
     color: "#C29F8A",
     metalness: 0.0,
     roughness: 0.9,
-    bumpMap: fingerprintNormalMap,
+    bumpMap: bumpMap,
     bumpScale: 3,
     sheen: 0.5,
     sheenColor: "#FFDAB9",
