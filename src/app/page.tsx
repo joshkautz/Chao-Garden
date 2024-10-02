@@ -1,19 +1,13 @@
 "use client";
 
 import React from "react";
-import { Canvas, ThreeElements } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import * as THREE from "three";
-
-const Sphere = (props: ThreeElements["mesh"]) => {
-  const geometry = new THREE.SphereGeometry(1, 64, 64);
-  const material = new THREE.MeshStandardMaterial({
-    color: "tan",
-    metalness: 0.0,
-  });
-
-  return <mesh geometry={geometry} material={material} {...props} />;
-};
+import { Canvas } from "@react-three/fiber";
+import {
+  Billboard,
+  Image,
+  OrbitControls,
+  PerspectiveCamera,
+} from "@react-three/drei";
 
 export default function Home() {
   return (
@@ -21,10 +15,19 @@ export default function Home() {
       <PerspectiveCamera makeDefault position={[5, 5, 5]} fov={75} />
       <ambientLight intensity={Math.PI / 2} />
       <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-      <Sphere position={[0, 0, 0]} scale={[2, 2, 2]} />
       <OrbitControls />
       <gridHelper />
       <axesHelper args={[5]} />
+
+      <Billboard
+        follow={true}
+        lockX={false}
+        lockY={false}
+        lockZ={false}
+        position={[1, 0, 1]}
+      >
+        <Image url="paper_tree_1.png" transparent position={[0, 0.5, 0]} />
+      </Billboard>
     </Canvas>
   );
 }
