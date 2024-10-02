@@ -8,40 +8,12 @@ import {
   Stats,
   StatsGl,
 } from "@react-three/drei";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
 import * as THREE from "three";
-
 import { LoopSubdivision } from "three-subdivide";
 
-const addSphereGeometryDisplacement = (geometry: THREE.SphereGeometry) => {
-  for (let i = 0; i < geometry.attributes.uv.array.length / 2; i++) {
-    // u is stored at even indices (v is stored at odd indices)
-    const u = geometry.attributes.uv.array[i * 2];
-
-    // Vertices where u = 0 or u = 1 are on the seam
-    if (u !== 0 && u !== 1) {
-      // Vertices at the top of the sphere.
-      if (i >= geometry.parameters.widthSegments) {
-        // Vertices at the bottom of the sphere.
-        if (
-          i <
-          geometry.attributes.position.count - geometry.parameters.widthSegments
-        ) {
-          const index = i * 3;
-          geometry.attributes.position.array[index] += Math.random() * 0.1; // x coordinate of the vertex
-          geometry.attributes.position.array[index + 1] += Math.random() * 0.1; // y coordinate
-          geometry.attributes.position.array[index + 2] += Math.random() * 0.1; // z coordinate
-        }
-      }
-    }
-  }
-};
-
-const Sphere = () => {
-  const [bumpMap, displacementMap] = useLoader(THREE.TextureLoader, [
-    "Fingerprints01_3K_Bump.png",
-    "displacementMap.jpg",
-  ]);
-
+const applySubdivisionModifier = (obj: THREE.Group<THREE.Object3DEventMap>) => {
   const iterations = 2;
 
   const params = {
@@ -52,63 +24,81 @@ const Sphere = () => {
     maxTriangles: 10000, // optional, default: Infinity
   };
 
-  let sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+  const mesh = obj.children.find(
+    (child) => child instanceof THREE.Mesh
+  ) as THREE.Mesh;
 
-  // NOTE: This doesn't introduce any problems. I think it's a good way to add some irregularity to the surface.
-  addSphereGeometryDisplacement(sphereGeometry);
+  if (mesh) {
+    mesh.geometry = LoopSubdivision.modify(mesh.geometry, iterations, params);
+  }
+};
 
-  // NOTE: This BY FAR does the best job of smoothing the vertices on the geometry.
-  sphereGeometry = LoopSubdivision.modify(
-    sphereGeometry,
-    iterations,
-    params
-  ) as THREE.SphereGeometry;
+const addGeometryDisplacement = (obj: THREE.Group<THREE.Object3DEventMap>) => {
+  const mesh = obj.children.find(
+    (child) => child instanceof THREE.Mesh
+  ) as THREE.Mesh;
 
-  // NOTE: This makes the seam noticeable. Might not matter if it's always on the back side away from the camera...
-  // sphereGeometry.computeVertexNormals();
+  if (!mesh) return;
 
-  const clayMaterial = new THREE.MeshPhysicalMaterial({
-    // wireframe: true,
-    color: "#C29F8A",
-    metalness: 0.0,
-    roughness: 0.9,
-    bumpMap: bumpMap,
-    bumpScale: 3,
-    sheen: 0.5,
-    sheenColor: "#FFDAB9",
-    // NOTE: Additional displacement map is actually adding some good irregularity to the surface.
-    displacementMap: displacementMap,
-    displacementScale: 0.2,
+  const geometry = mesh.geometry;
+  const positionAttribute = geometry.attributes.position;
+  const displacement = 2; // Adjust this value as needed
+
+  // Map to store displacements for each unique vertex
+  const vertexDisplacementMap = new Map<string, [number, number, number]>();
+
+  for (let i = 0; i < positionAttribute.count; i++) {
+    const x = positionAttribute.getX(i);
+    const y = positionAttribute.getY(i);
+    const z = positionAttribute.getZ(i);
+
+    // Create a unique key for the vertex
+    const key = `${x},${y},${z}`;
+
+    // If the displacement for this vertex hasn't been computed yet, compute and store it
+    if (!vertexDisplacementMap.has(key)) {
+      const noiseX = (Math.random() - 0.5) * displacement;
+      const noiseY = (Math.random() - 0.5) * displacement;
+      const noiseZ = (Math.random() - 0.5) * displacement;
+      vertexDisplacementMap.set(key, [noiseX, noiseY, noiseZ]);
+    }
+
+    // Retrieve the stored displacement
+    const [noiseX, noiseY, noiseZ] = vertexDisplacementMap.get(key)!;
+
+    // Apply the displacement
+    const newX = x + noiseX;
+    const newY = y + noiseY;
+    const newZ = z + noiseZ;
+
+    positionAttribute.setXYZ(i, newX, newY, newZ);
+  }
+};
+
+const Model = () => {
+  const mtl = useLoader(MTLLoader, "Chao Egg.mtl");
+  const obj = useLoader(OBJLoader, "Chao Egg.obj", (loader) => {
+    mtl.preload();
+    loader.setMaterials(mtl);
   });
 
-  if (clayMaterial.bumpMap) {
-    clayMaterial.bumpMap.wrapS = THREE.RepeatWrapping;
-    clayMaterial.bumpMap.wrapT = THREE.RepeatWrapping;
-    clayMaterial.bumpMap.repeat.set(2, 2);
-    clayMaterial.bumpMap.anisotropy = 16;
-  }
+  addGeometryDisplacement(obj);
+
+  applySubdivisionModifier(obj);
 
   return (
-    <mesh
-      position={[0, 0, 0]}
-      scale={[1, 1, 1]}
-      geometry={sphereGeometry}
-      material={clayMaterial}
-    />
+    <primitive object={obj} position={[0, -0.5, 0]} scale={[0.3, 0.3, 0.3]} />
   );
 };
 
 export default function Home() {
   return (
     <Canvas>
-      <PerspectiveCamera makeDefault position={[1.25, 1, 1.25]} fov={75} />
-      <directionalLight
-        intensity={0.8}
-        color={"#ffffff"}
-        position={[0, 10, 0]}
-      />
+      <PerspectiveCamera makeDefault position={[1.25, 1.25, 1.25]} fov={75} />
+      <ambientLight intensity={1} />
+      <directionalLight intensity={1} color={"#ffffff"} position={[0, 1, -1]} />
 
-      <Sphere />
+      <Model />
 
       <OrbitControls />
       <gridHelper />
