@@ -12,7 +12,6 @@ import {
 import * as THREE from "three";
 
 const addSphereGeometryDisplacement = (geometry: THREE.SphereGeometry) => {
-  console.log(geometry.attributes.position.count);
   for (let i = 0; i < geometry.attributes.uv.array.length / 2; i++) {
     // u is stored at even indices (v is stored at odd indices)
     const u = geometry.attributes.uv.array[i * 2];
@@ -32,7 +31,6 @@ const addSphereGeometryDisplacement = (geometry: THREE.SphereGeometry) => {
             Math.random() * 0.025; // y coordinate
           geometry.attributes.position.array[index + 2] +=
             Math.random() * 0.025; // z coordinate
-          console.log(i);
         }
       }
     }
