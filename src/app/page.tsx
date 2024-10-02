@@ -26,11 +26,11 @@ const addSphereGeometryDisplacement = (geometry: THREE.SphereGeometry) => {
           geometry.attributes.position.count - geometry.parameters.widthSegments
         ) {
           const index = i * 3;
-          geometry.attributes.position.array[index] += Math.random() * 0.025; // x coordinate of the vertex
+          geometry.attributes.position.array[index] += Math.random() * 0.01; // x coordinate of the vertex
           geometry.attributes.position.array[index + 1] +=
-            Math.random() * 0.025; // y coordinate
+            Math.random() * 0.01; // y coordinate
           geometry.attributes.position.array[index + 2] +=
-            Math.random() * 0.025; // z coordinate
+            Math.random() * 0.01; // z coordinate
         }
       }
     }
@@ -45,12 +45,13 @@ const Sphere = () => {
 
   return (
     <mesh position={[0, 0, 0]} scale={[3, 3, 3]} geometry={sphereGeometry}>
-      <meshStandardMaterial
-        // wireframe={true}
+      <meshPhysicalMaterial
         color="#C29F8A"
         metalness={0.0}
         roughness={0.9}
         normalMap={normalMap}
+        sheen={0.5}
+        sheenColor={"#FFDAB9"}
       />
     </mesh>
   );
@@ -60,8 +61,12 @@ export default function Home() {
   return (
     <Canvas>
       <PerspectiveCamera makeDefault position={[4, 4, 4]} fov={75} />
-      <ambientLight intensity={Math.PI / 4} />
-      <pointLight position={[10, 10, -10]} decay={0} intensity={Math.PI} />
+      <ambientLight intensity={0.6} color={"#ffffff"} />
+      <directionalLight
+        intensity={0.8}
+        color={"#ffffff"}
+        position={[0, 10, 0]}
+      />
 
       <Sphere />
 
