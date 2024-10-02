@@ -2,29 +2,29 @@
 
 import React from "react";
 import { Canvas, ThreeElements } from "@react-three/fiber";
-import { useGLTF, OrbitControls } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import * as THREE from "three";
 
-const Model = (props: ThreeElements["group"]) => {
-  const { scene } = useGLTF("clay.glb");
-  return <primitive object={scene} {...props} />;
+const Sphere = (props: ThreeElements["mesh"]) => {
+  const geometry = new THREE.SphereGeometry(1, 64, 64);
+  const material = new THREE.MeshStandardMaterial({
+    color: "tan",
+    metalness: 0.0,
+  });
+
+  return <mesh geometry={geometry} material={material} {...props} />;
 };
-
-useGLTF.preload("clay.glb");
 
 export default function Home() {
   return (
     <Canvas>
+      <PerspectiveCamera makeDefault position={[5, 5, 5]} fov={75} />
       <ambientLight intensity={Math.PI / 2} />
-      <spotLight
-        position={[10, 10, 10]}
-        angle={0.15}
-        penumbra={1}
-        decay={0}
-        intensity={Math.PI}
-      />
       <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-      <Model position={[0, 0, 0]} scale={[2, 2, 2]} />
+      <Sphere position={[0, 0, 0]} scale={[2, 2, 2]} />
       <OrbitControls />
+      <gridHelper />
+      <axesHelper args={[5]} />
     </Canvas>
   );
 }
