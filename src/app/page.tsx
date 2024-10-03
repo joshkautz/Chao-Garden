@@ -10,10 +10,13 @@ import {
 } from "@react-three/drei";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
-import * as THREE from "three";
+import { TextureLoader } from "three/src/loaders/TextureLoader.js";
 import { LoopSubdivision } from "three-subdivide";
+import * as THREE from "three";
 
-const applySubdivisionModifier = (obj: THREE.Group<THREE.Object3DEventMap>) => {
+const applySubdivisionModifier = (
+  geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes>
+) => {
   const iterations = 2;
 
   const params = {
@@ -24,25 +27,14 @@ const applySubdivisionModifier = (obj: THREE.Group<THREE.Object3DEventMap>) => {
     maxTriangles: 10000, // optional, default: Infinity
   };
 
-  const mesh = obj.children.find(
-    (child) => child instanceof THREE.Mesh
-  ) as THREE.Mesh;
-
-  if (mesh) {
-    mesh.geometry = LoopSubdivision.modify(mesh.geometry, iterations, params);
-  }
+  return LoopSubdivision.modify(geometry, iterations, params);
 };
 
-const addGeometryDisplacement = (obj: THREE.Group<THREE.Object3DEventMap>) => {
-  const mesh = obj.children.find(
-    (child) => child instanceof THREE.Mesh
-  ) as THREE.Mesh;
-
-  if (!mesh) return;
-
-  const geometry = mesh.geometry;
+const addGeometryDisplacement = (
+  geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes>
+) => {
   const positionAttribute = geometry.attributes.position;
-  const displacement = 2; // Adjust this value as needed
+  const displacement = 0.1; // Adjust this value as needed
 
   // Map to store displacements for each unique vertex
   const vertexDisplacementMap = new Map<string, [number, number, number]>();
@@ -73,28 +65,76 @@ const addGeometryDisplacement = (obj: THREE.Group<THREE.Object3DEventMap>) => {
 
     positionAttribute.setXYZ(i, newX, newY, newZ);
   }
+
+  return geometry;
+};
+
+const addClayMaterial = (
+  oldMaterial: THREE.Material | THREE.Material[],
+  texture: THREE.Texture
+) => {
+  console.log(oldMaterial);
+  const newMaterial = new THREE.MeshPhysicalMaterial({
+    metalness: 0.0,
+    roughness: 0.9,
+    bumpMap: texture,
+    bumpScale: 3,
+    lightMapIntensity: 0.5,
+    lightMap: texture,
+    sheen: 0.5,
+    sheenColor: "#FFDAB9",
+    map: (oldMaterial as THREE.MeshPhongMaterial).map,
+  });
+
+  if (newMaterial.bumpMap) {
+    newMaterial.bumpMap.wrapS = THREE.RepeatWrapping;
+    newMaterial.bumpMap.wrapT = THREE.RepeatWrapping;
+    newMaterial.bumpMap.repeat.set(0.5, 0.5);
+    newMaterial.bumpMap.anisotropy = 16;
+  }
+
+  return newMaterial;
 };
 
 const Model = () => {
+  const texture = useLoader(
+    TextureLoader,
+    "test/imperfection_0002_color_2k.jpg"
+  );
   const mtl = useLoader(MTLLoader, "Chao Egg.mtl");
   const obj = useLoader(OBJLoader, "Chao Egg.obj", (loader) => {
     mtl.preload();
     loader.setMaterials(mtl);
   });
 
-  addGeometryDisplacement(obj);
+  let geometry = (
+    obj.children.find((child) => child instanceof THREE.Mesh) as THREE.Mesh
+  ).geometry;
 
-  applySubdivisionModifier(obj);
+  let material = (
+    obj.children.find((child) => child instanceof THREE.Mesh) as THREE.Mesh
+  ).material;
+
+  geometry = addGeometryDisplacement(geometry);
+
+  geometry = applySubdivisionModifier(geometry);
+
+  material = addClayMaterial(material, texture);
 
   return (
-    <primitive object={obj} position={[0, -0.5, 0]} scale={[0.3, 0.3, 0.3]} />
+    <mesh
+      geometry={geometry}
+      material={material}
+      position={[0, 0, 0]}
+      scale={[1, 1, 1]}
+    />
   );
 };
 
 export default function Home() {
   return (
     <Canvas>
-      <PerspectiveCamera makeDefault position={[1.25, 1.25, 1.25]} fov={75} />
+      <PerspectiveCamera makeDefault position={[5, 5, 5]} fov={75} />
       <ambientLight intensity={1} />
       <directionalLight intensity={1} color={"#ffffff"} position={[0, 1, -1]} />
 
