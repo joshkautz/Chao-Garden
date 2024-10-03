@@ -6,6 +6,7 @@ import { PresentationControls, Stats, StatsGl } from "@react-three/drei";
 
 import { TailsChao } from "./models/tailsChao";
 import { GrassTile } from "./models/grassTile";
+import { WaterTile } from "./models/waterTile";
 
 export default function Home() {
   return (
@@ -16,11 +17,11 @@ export default function Home() {
         enabled={true}
         rotation={[Math.PI / 8, -Math.PI / 4, 0]}
       >
-        <GrassTile position={[1, 0, 1]} scale={10} />
-        <GrassTile position={[1, 0, 3]} scale={10} />
+        <WaterTile position={[1, 0, 1]} scale={10} />
+        <WaterTile position={[1, 0, 3]} scale={10} />
         <GrassTile position={[1, 0, 5]} scale={10} />
-        <GrassTile position={[3, 0, 1]} scale={10} />
-        <GrassTile position={[3, 0, 3]} scale={10} />
+        <WaterTile position={[3, 0, 1]} scale={10} />
+        <WaterTile position={[3, 0, 3]} scale={10} />
         <GrassTile position={[3, 0, 5]} scale={10} />
         <GrassTile position={[5, 0, 1]} scale={10} />
         <GrassTile position={[5, 0, 3]} scale={10} />
@@ -56,7 +57,7 @@ export default function Home() {
         <GrassTile position={[-5, 0, -3]} scale={10} />
         <GrassTile position={[-5, 0, -5]} scale={10} />
 
-        <TailsChao position={[0, 0.8, 0]} scale={1}/>
+        <TailsChao position={[-1, 0.8, 1]} scale={0.5} />
 
         <gridHelper args={[30, 30]} />
         <axesHelper args={[10]} />

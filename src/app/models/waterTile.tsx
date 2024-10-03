@@ -5,8 +5,10 @@ import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { GroupProps } from "@react-three/fiber";
 
-export const GrassTile = (props: GroupProps) => {
-  const GLTF = useGLTF("grassTile/grassTile.gltf");
+export const WaterTile = (props: GroupProps) => {
+  const GLTF = useGLTF("waterTile/waterTile.gltf");
+  console.log(GLTF);
+  console.log(GLTF.scene);
 
   return (
     <group {...props}>

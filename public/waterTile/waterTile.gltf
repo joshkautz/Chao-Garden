@@ -1,0 +1,188 @@
+{
+    "asset": {
+        "copyright": "2024 (c) Adobe Inc.",
+        "generator": "Adobe Substance 3D Stager - b502d25ecd3326a18b935c9844d597067f3ccddb",
+        "version": "2.0"
+    },
+    "accessors": [
+        {
+            "bufferView": 0,
+            "componentType": 5126,
+            "count": 24,
+            "type": "VEC3",
+            "max": [
+                0.09999999403953552,
+                0.03999999910593033,
+                0.09999999403953552
+            ],
+            "min": [
+                -0.09999999403953552,
+                0.0,
+                -0.09999999403953552
+            ]
+        },
+        {
+            "bufferView": 1,
+            "componentType": 5126,
+            "count": 24,
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 2,
+            "componentType": 5126,
+            "count": 24,
+            "type": "VEC4"
+        },
+        {
+            "bufferView": 3,
+            "componentType": 5126,
+            "count": 24,
+            "type": "VEC2"
+        },
+        {
+            "bufferView": 4,
+            "componentType": 5125,
+            "count": 36,
+            "type": "SCALAR",
+            "max": [
+                23.0
+            ],
+            "min": [
+                0.0
+            ]
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 288,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 288,
+            "byteLength": 288,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 576,
+            "byteLength": 384,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 960,
+            "byteLength": 192,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 1152,
+            "byteLength": 144,
+            "target": 34963
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 1296,
+            "uri": "waterTile_binary.bin"
+        }
+    ],
+    "materials": [
+        {
+            "pbrMetallicRoughness": {
+                "baseColorFactor": [
+                    0.4752783477306366,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "metallicFactor": 0.5799999833106995,
+                "roughnessFactor": 0.07000000029802323
+            },
+            "name": "water_material3",
+            "doubleSided": true,
+            "extensions": {
+                "KHR_materials_transmission": {
+                    "transmissionFactor": 1
+                },
+                "ADOBE_materials_clearcoat_specular": {
+                    "clearcoatIor": 1.600000023841858,
+                    "clearcoatSpecularFactor": 1
+                },
+                "KHR_materials_volume": {
+                    "thicknessFactor": 0
+                },
+                "KHR_materials_clearcoat": {
+                    "clearcoatFactor": 0.41999998688697817,
+                    "clearcoatRoughnessFactor": 0.4900000095367432
+                },
+                "KHR_materials_ior": {
+                    "ior": 1.3300000429153443
+                },
+                "KHR_materials_sheen": {
+                    "sheenColorFactor": [
+                        0,
+                        0.5044456720352173,
+                        0.5899999737739563
+                    ],
+                    "sheenRoughnessFactor": 0.41999998688697817
+                },
+                "KHR_materials_specular": {
+                    "specularColorFactor": [
+                        0,
+                        0.7529423236846923,
+                        1
+                    ],
+                    "specularFactor": 0.8799999952316285
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "default_procedural_mesh_cube#",
+            "primitives": [
+                {
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TANGENT": 2,
+                        "TEXCOORD_0": 3
+                    },
+                    "indices": 4,
+                    "material": 0
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "working_cam_n3d"
+        },
+        {
+            "mesh": 0,
+            "name": "default_procedural_mesh_cube_n3d"
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                1
+            ],
+            "name": "scene"
+        }
+    ],
+    "scene": 0,
+    "extensionsUsed": [
+        "KHR_materials_transmission",
+        "KHR_materials_volume",
+        "ADOBE_materials_clearcoat_specular",
+        "KHR_materials_ior",
+        "KHR_materials_clearcoat",
+        "KHR_materials_specular",
+        "KHR_materials_sheen"
+    ]
+}
