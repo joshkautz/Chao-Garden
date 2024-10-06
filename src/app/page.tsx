@@ -2,11 +2,18 @@
 
 import React from "react";
 import { Canvas } from "@react-three/fiber";
-import { PresentationControls, Stats, StatsGl } from "@react-three/drei";
+import {
+  Image,
+  Billboard,
+  PresentationControls,
+  Stats,
+  StatsGl,
+} from "@react-three/drei";
 
 import { TailsChao } from "./models/tailsChao";
 import { GrassTile } from "./models/grassTile";
 import { WaterTile } from "./models/waterTile";
+import { DirtTile } from "./models/dirtTile";
 
 export default function Home() {
   return (
@@ -32,10 +39,32 @@ export default function Home() {
         <GrassTile position={[-1, 0, 5]} scale={10} />
         <GrassTile position={[-3, 0, 1]} scale={10} />
         <GrassTile position={[-3, 0, 3]} scale={10} />
-        <GrassTile position={[-3, 0, 5]} scale={10} />
+        <DirtTile position={[-3, 0, 5]} scale={10} />
         <GrassTile position={[-5, 0, 1]} scale={10} />
         <GrassTile position={[-5, 0, 3]} scale={10} />
         <GrassTile position={[-5, 0, 5]} scale={10} />
+
+        <Billboard
+          follow={true}
+          lockX={false}
+          lockY={true}
+          lockZ={false}
+          position={[-3, 2.3, 1]}
+          scale={4}
+        >
+          <Image url="Images/tree_01.png" transparent={true} />
+        </Billboard>
+
+        <Billboard
+          follow={true}
+          lockX={false}
+          lockY={false}
+          lockZ={false}
+          position={[5, 2.3, -1]}
+          scale={4}
+        >
+          <Image url="Images/tree_02.png" transparent={true} />
+        </Billboard>
 
         <GrassTile position={[1, 0, -1]} scale={10} />
         <GrassTile position={[1, 0, -3]} scale={10} />
