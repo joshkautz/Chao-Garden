@@ -5,7 +5,6 @@ import { Canvas } from "@react-three/fiber";
 import { PresentationControls, Stats, StatsGl } from "@react-three/drei";
 import { CardboardTree01 } from "./models/cardboardTree01";
 import { CardboardTree02 } from "./models/cardboardTree02";
-import { CardboardTile } from "./models/cardboardTile";
 import { Vector2 } from "three";
 
 export default function Home() {
@@ -19,7 +18,6 @@ export default function Home() {
       >
         <CardboardTree01 location={new Vector2(4, 5)} />
         <CardboardTree02 location={new Vector2(4, 3)} />
-        <CardboardTile location={new Vector2(5, 5)} />
 
         <gridHelper args={[30, 30]} />
         <axesHelper args={[10]} />
