@@ -1,30 +1,16 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import { Canvas } from "@react-three/fiber";
 import { PresentationControls, Stats, StatsGl } from "@react-three/drei";
 
 import { CorrugatedBoard } from "./models/corrugatedBoard";
-import { Euler, Quaternion, Vector3 } from "three";
+import { Euler, Vector2, Vector3 } from "three";
+import { CorrugatedBoardTree } from "./models/corrugatedBoardTree";
+import { calculateCameraPosition } from "./utilities/calculateCameraPosition";
 
 export default function Home() {
-  const SCALE_X = 3;
-  const SCALE_Y = 3;
-  const SCALE_Z = 3;
-
-  const cameraPosition = useMemo(() => {
-    // Initial camera position
-    const initialPosition = new Vector3(0, 0, 10);
-
-    // Rotation in Euler angles
-    const rotationEuler = new Euler(-Math.PI / 8, Math.PI / 4, 0);
-
-    // Convert Euler angles to quaternion
-    const rotationQuaternion = new Quaternion().setFromEuler(rotationEuler);
-
-    // Apply the rotation to the initial position
-    return initialPosition.applyQuaternion(rotationQuaternion);
-  }, []);
+  console.log(calculateCameraPosition());
 
   return (
     <Canvas camera={{ position: [0, 0, 10], fov: 75 }} shadows={true}>
@@ -35,10 +21,16 @@ export default function Home() {
         rotation={[Math.PI / 8, -Math.PI / 4, 0]}
       >
         <CorrugatedBoard
-          position={new Vector3(2.5, SCALE_Y / 2, 2.5)}
-          scale={new Vector3(SCALE_X, SCALE_Y, SCALE_Z)}
+          location={new Vector2(2, 2)}
+          scale={new Vector3(3, 3, 1)}
           rotation={new Euler(0, Math.PI / 4, 0)}
           thickness={0.1}
+        />
+
+        <CorrugatedBoardTree
+          location={new Vector2(2, 2)}
+          scale={new Vector3(1, 1, 1)}
+          rotation={new Euler(0, Math.PI / 4, 0)}
         />
 
         <gridHelper args={[30, 30]} />
