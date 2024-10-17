@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/csg": "^3.2.0",
     "@react-three/drei": "^9.114.0",
     "@react-three/fiber": "^8.17.9",
     "@types/three": "^0.169.0",
@@ -16,6 +17,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "three": "^0.169.0",
+    "three-csg-ts": "^3.2.0",
     "three-subdivide": "^1.1.5"
   },
   "devDependencies": {
