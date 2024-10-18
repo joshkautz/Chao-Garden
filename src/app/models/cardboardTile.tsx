@@ -1,14 +1,28 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { BufferGeometry, ExtrudeGeometry, Vector2, Vector3 } from "three";
+import {
+  Box3,
+  BufferGeometry,
+  ExtrudeGeometry,
+  Mesh,
+  Vector2,
+  Vector3,
+} from "three";
 import { Addition, Base, Geometry, Intersection } from "@react-three/csg";
 import { createCorrugatedBoardGeometry } from "../utilities/createCorrugatedBoardGeometry";
-import { createExtrudedTree02Geometry } from "../utilities/createExtrudedTree02Geometry";
 import { CARDBOARD_MATERIAL } from "../materials/cardboard";
 import { GamePieceProps } from "../interfaces/gamePieceProps";
 
 export const CardboardTile = ({ location }: GamePieceProps) => {
+  const [corrugatedBoardGeometry, setCorrugatedBoardGeometry] =
+    useState<BufferGeometry>();
+  const [corrugatedBoardGeometryLoading, setCorrugatedBoardGeometryLoading] =
+    useState<boolean>(true);
+  const [corrugatedBoardGeometryError, setCorrugatedBoardGeometryError] =
+    useState<Error>();
+
+  const THICKNESS = 0.1;
   const POSITION = useMemo(() => {
     let x = 0;
     let y = 0;
@@ -19,24 +33,12 @@ export const CardboardTile = ({ location }: GamePieceProps) => {
     if (locationX < 0) x = locationX + 0.5;
     if (locationY > 0) y = locationY - 0.5;
     if (locationY < 0) y = locationY + 0.5;
-    return new Vector3(x, 0, y);
-  }, [location]);
-
-  const [corrugatedBoardGeometry, setCorrugatedBoardGeometry] =
-    useState<BufferGeometry>();
-  const [corrugatedBoardGeometryLoading, setCorrugatedBoardGeometryLoading] =
-    useState<boolean>(true);
-  const [corrugatedBoardGeometryError, setCorrugatedBoardGeometryError] =
-    useState<Error>();
-
-  const LOADING: boolean = useMemo<boolean>(
-    () => corrugatedBoardGeometryLoading,
-    [corrugatedBoardGeometryLoading]
-  );
+    return new Vector3(x, -THICKNESS, y);
+  }, [location, corrugatedBoardGeometry]);
 
   useEffect(() => {
     // Load the corrugated board geometry.
-    createCorrugatedBoardGeometry(4)
+    createCorrugatedBoardGeometry()
       .then((geometry) => {
         setCorrugatedBoardGeometry(geometry);
       })
@@ -50,30 +52,25 @@ export const CardboardTile = ({ location }: GamePieceProps) => {
       });
   }, []);
 
+  useEffect(() => {
+    // Rotate and Position
+    if (corrugatedBoardGeometry) {
+      corrugatedBoardGeometry.rotateY(-Math.PI / 4);
+      corrugatedBoardGeometry.rotateX(Math.PI / 2);
+      corrugatedBoardGeometry.center();
+      Math.random() < 0.5 && corrugatedBoardGeometry.rotateY(-Math.PI / 2);
+      corrugatedBoardGeometry.translate(POSITION.x, POSITION.y, POSITION.z);
+    }
+  }, [corrugatedBoardGeometry]);
+
   // TODO: Handle the loading and error states for the extruded tree geometry and corrugated board geometry.
 
-  return LOADING ? (
+  return (
     <mesh
       castShadow
       receiveShadow
       material={CARDBOARD_MATERIAL}
-      position={POSITION}
-    >
-      <sphereGeometry />
-    </mesh>
-  ) : (
-    <mesh
-      castShadow
-      receiveShadow
-      material={CARDBOARD_MATERIAL}
-      position={POSITION}
-    >
-      <Geometry>
-        <Base geometry={corrugatedBoardGeometry} />
-        <Addition>
-          <boxGeometry args={[1, 1, 1]} />
-        </Addition>
-      </Geometry>
-    </mesh>
+      geometry={corrugatedBoardGeometry}
+    />
   );
 };
