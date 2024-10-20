@@ -1,0 +1,221 @@
+{
+    "asset": {
+        "copyright": "2024 (c) Adobe Inc.",
+        "generator": "Adobe Substance 3D Stager - b502d25ecd3326a18b935c9844d597067f3ccddb",
+        "version": "2.0"
+    },
+    "accessors": [
+        {
+            "bufferView": 0,
+            "componentType": 5126,
+            "count": 2376,
+            "type": "VEC3",
+            "max": [
+                0.09999999403953552,
+                0.07999999821186066,
+                0.09999999403953552
+            ],
+            "min": [
+                -0.09999999403953552,
+                0.0,
+                -0.09999999403953552
+            ]
+        },
+        {
+            "bufferView": 1,
+            "componentType": 5126,
+            "count": 2376,
+            "type": "VEC3"
+        },
+        {
+            "bufferView": 2,
+            "componentType": 5126,
+            "count": 2376,
+            "type": "VEC4"
+        },
+        {
+            "bufferView": 3,
+            "componentType": 5126,
+            "count": 2376,
+            "type": "VEC2"
+        },
+        {
+            "bufferView": 4,
+            "componentType": 5125,
+            "count": 11076,
+            "type": "SCALAR",
+            "max": [
+                2375.0
+            ],
+            "min": [
+                0.0
+            ]
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 28512,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 28512,
+            "byteLength": 28512,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 57024,
+            "byteLength": 38016,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 95040,
+            "byteLength": 19008,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 114048,
+            "byteLength": 44304,
+            "target": 34963
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 158352,
+            "uri": "grassTile_binary.bin"
+        }
+    ],
+    "images": [
+        {
+            "name": "Blue Plasticine-3A-3Abase_color-3A-3Asampler",
+            "uri": "grassTile_images/Blue Plasticine-3A-3Abase_color-3A-3Asampler.jpg",
+            "mimeType": "image/jpeg"
+        },
+        {
+            "name": "sampler",
+            "uri": "grassTile_images/sampler.png",
+            "mimeType": "image/png"
+        },
+        {
+            "name": "sampler_0",
+            "uri": "grassTile_images/sampler_0.png",
+            "mimeType": "image/png"
+        },
+        {
+            "name": "normal_image_texture",
+            "uri": "grassTile_images/normal_image_texture.png",
+            "mimeType": "image/png"
+        }
+    ],
+    "materials": [
+        {
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 0
+                },
+                "metallicFactor": 0.0,
+                "metallicRoughnessTexture": {
+                    "index": 1
+                }
+            },
+            "normalTexture": {
+                "index": 3
+            },
+            "name": "Blue Plasticine_material",
+            "doubleSided": true,
+            "extensions": {
+                "KHR_materials_diffuse_transmission": {
+                    "translucencyFactor": 1,
+                    "translucencyTexture": {
+                        "index": 2
+                    }
+                },
+                "KHR_materials_volume": {
+                    "thicknessFactor": 0
+                },
+                "KHR_materials_subsurface": {
+                    "scatterColor": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "scatterDistance": 1
+                },
+                "KHR_materials_specular": {
+                    "specularFactor": 0.9960784316062928
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "default_procedural_mesh_cube#",
+            "primitives": [
+                {
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TANGENT": 2,
+                        "TEXCOORD_0": 3
+                    },
+                    "indices": 4,
+                    "material": 0
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "working_cam_n3d"
+        },
+        {
+            "mesh": 0,
+            "name": "default_procedural_mesh_cube_n3d"
+        }
+    ],
+    "samplers": [
+        {}
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                1
+            ],
+            "name": "scene"
+        }
+    ],
+    "textures": [
+        {
+            "name": "Blue Plasticine::base_color::sampler",
+            "sampler": 0,
+            "source": 0
+        },
+        {
+            "name": "sampler",
+            "sampler": 0,
+            "source": 1
+        },
+        {
+            "name": "sampler",
+            "sampler": 0,
+            "source": 2
+        },
+        {
+            "name": "normal_image_texture",
+            "sampler": 0,
+            "source": 3
+        }
+    ],
+    "scene": 0,
+    "extensionsUsed": [
+        "KHR_materials_diffuse_transmission",
+        "KHR_materials_volume",
+        "KHR_materials_subsurface",
+        "KHR_materials_specular"
+    ]
+}
