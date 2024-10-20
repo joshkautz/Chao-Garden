@@ -12,7 +12,7 @@ export default function Home() {
   // prettier-ignore
   const TILES_X = [-5,-4,-3,-2,-1,1,2,3,4,5]
   // prettier-ignore
-  const TILES_Z = [-5,-4,-3,-2,-1,1,2,3,4,5]
+  const TILES_Z = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5]
 
   return (
     <Canvas camera={{ position: [0, 0, 10], fov: 75 }} shadows={true}>
@@ -22,17 +22,17 @@ export default function Home() {
         enabled={true}
         rotation={[Math.PI / 8, -Math.PI / 4, 0]}
       >
-        <CardboardTree01 location={new Vector2(-4, 3)} />
-        <CardboardTree02 location={new Vector2(4, 1)} />
+        {/* <CardboardTree01 location={new Vector2(-4, 3)} /> */}
+        <CardboardTree02 location={new Vector2(4, 4)} />
 
-        {TILES_X.map((x) =>
+        {/* {TILES_X.map((x) =>
           TILES_Z.map((z) => (
             <CardboardTile key={`${x}${z}`} location={new Vector2(x, z)} />
           ))
-        )}
+        )} */}
 
-        {/* <gridHelper args={[30, 30]} />
-        <axesHelper args={[10]} /> */}
+        <gridHelper args={[30, 30]} />
+        <axesHelper args={[10]} />
 
         <directionalLight
           // Directional Light at the original location of the camera.

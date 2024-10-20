@@ -1,14 +1,17 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
-import { BufferGeometry, ExtrudeGeometry, Vector2, Vector3 } from "three";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { BufferGeometry, ExtrudeGeometry, Mesh, Vector2, Vector3 } from "three";
 import { Base, Geometry, Intersection } from "@react-three/csg";
 import { createCorrugatedBoardGeometry } from "../utilities/createCorrugatedBoardGeometry";
 import { createExtrudedTree02Geometry } from "../utilities/createExtrudedTree02Geometry";
 import { CARDBOARD_MATERIAL } from "../materials/cardboard";
 import { GamePieceProps } from "../interfaces/gamePieceProps";
+import { addExportTool } from "../utilities/addExportTool";
 
 export const CardboardTree02 = ({ location }: GamePieceProps) => {
+  const meshRef = useRef<Mesh>(null);
+
   const POSITION = useMemo(() => {
     let x = 0;
     let y = 0;
@@ -36,13 +39,11 @@ export const CardboardTree02 = ({ location }: GamePieceProps) => {
   const [corrugatedBoardGeometryError, setCorrugatedBoardGeometryError] =
     useState<Error>();
 
-  const LOADING: boolean = useMemo<boolean>(
-    () => extrudedTree02GeometryLoading || corrugatedBoardGeometryLoading,
-    [extrudedTree02GeometryLoading, corrugatedBoardGeometryLoading]
-  );
-
   useEffect(() => {
-    // Load the extruded tree geometry.
+    // Add Export Tool to UI.
+    addExportTool(meshRef.current as Mesh, document);
+
+    // Load the extruded tree geometry.s
     createExtrudedTree02Geometry()
       .then((geometry) => {
         setExtrudedTree02Geometry(geometry);
@@ -73,17 +74,9 @@ export const CardboardTree02 = ({ location }: GamePieceProps) => {
 
   // TODO: Handle the loading and error states for the extruded tree geometry and corrugated board geometry.
 
-  return LOADING ? (
+  return (
     <mesh
-      castShadow
-      receiveShadow
-      material={CARDBOARD_MATERIAL}
-      position={POSITION}
-    >
-      <sphereGeometry />
-    </mesh>
-  ) : (
-    <mesh
+      ref={meshRef}
       castShadow
       receiveShadow
       material={CARDBOARD_MATERIAL}
