@@ -9,7 +9,7 @@ export const createCorrugatedBoardGeometry = (
   const WAVES = 4 * SCALE;
   const THICKNESS = 0.1;
   const waveFrequency = WAVES * (Math.PI * 2); // Controls the frequency of the waves.
-  const waveAmplitude = THICKNESS + 0.005; // Controls the height of the waves. Add a small extra to clip and add texture.
+  const waveAmplitude = THICKNESS; // Controls the height of the waves.
 
   const frontPlane = new PlaneGeometry(1, 1);
   const backPlane = new PlaneGeometry(1, 1);

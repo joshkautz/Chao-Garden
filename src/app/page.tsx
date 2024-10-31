@@ -3,8 +3,8 @@
 import React from "react";
 import { Canvas } from "@react-three/fiber";
 import { PresentationControls, Stats, StatsGl } from "@react-three/drei";
-import { CardboardTree01 } from "./models/cardboardTree01";
-import { CardboardTree02 } from "./models/cardboardTree02";
+import { CardboardTree } from "./models/cardboardTree";
+import { CardboardTreeImport } from "./models/cardboardTreeImport";
 import { CardboardTile } from "./models/cardboardTile";
 import { Vector2 } from "three";
 
@@ -22,14 +22,14 @@ export default function Home() {
         enabled={true}
         rotation={[Math.PI / 8, -Math.PI / 4, 0]}
       >
-        {/* <CardboardTree01 location={new Vector2(-4, 3)} /> */}
-        <CardboardTree02 location={new Vector2(4, 4)} />
+        <CardboardTree location={new Vector2(6, 2)} />
+        <CardboardTreeImport location={new Vector2(2, 6)} />
 
-        {/* {TILES_X.map((x) =>
+        {TILES_X.map((x) =>
           TILES_Z.map((z) => (
             <CardboardTile key={`${x}${z}`} location={new Vector2(x, z)} />
           ))
-        )} */}
+        )}
 
         <gridHelper args={[30, 30]} />
         <axesHelper args={[10]} />

@@ -1,8 +1,8 @@
 import { Box3, ExtrudeGeometry, Mesh } from "three";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 
-export const createExtrudedTree02Geometry = () => {
-  const URL = "trees/tree_02.svg";
+export const createExtrudedTreeGeometry = () => {
+  const URL = "trees/Tree.svg";
   return new SVGLoader().loadAsync(URL).then((svgResult) => {
     const geometry = new ExtrudeGeometry(
       svgResult.paths.map((path) => SVGLoader.createShapes(path)).flat(),
@@ -12,7 +12,7 @@ export const createExtrudedTree02Geometry = () => {
     );
 
     // Rotate the geometry 180 degrees around the X-axis and center it
-    geometry.scale(0.05, 0.05, 0.05);
+    geometry.scale(0.025, 0.025, 0.025);
     geometry.rotateX(Math.PI);
     geometry.rotateY(Math.PI / 4);
     geometry.center();

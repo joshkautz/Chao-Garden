@@ -2,18 +2,14 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { BufferGeometry, ExtrudeGeometry, Mesh, Vector2, Vector3 } from "three";
-import { Addition, Base, Geometry, Intersection } from "@react-three/csg";
+import { Base, Geometry, Intersection } from "@react-three/csg";
 import { createCorrugatedBoardGeometry } from "../utilities/createCorrugatedBoardGeometry";
-import { createExtrudedTree02Geometry } from "../utilities/createExtrudedTree02Geometry";
+import { createExtrudedTreeGeometry } from "../utilities/createExtrudedTreeGeometry";
 import { CARDBOARD_MATERIAL } from "../materials/cardboard";
 import { GamePieceProps } from "../interfaces/gamePieceProps";
 import { addExportTool } from "../utilities/addExportTool";
-import { Line } from "./line";
 
-// prettier-ignore
-const LINES = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3, 3.1, 3.2]
-
-export const CardboardTree02 = ({ location }: GamePieceProps) => {
+export const CardboardTree = ({ location }: GamePieceProps) => {
   const meshRef = useRef<Mesh>(null);
 
   const POSITION = useMemo(() => {
@@ -29,11 +25,11 @@ export const CardboardTree02 = ({ location }: GamePieceProps) => {
     return new Vector3(x, 0, y);
   }, [location]);
 
-  const [extrudedTree02Geometry, setExtrudedTree02Geometry] =
+  const [extrudedTreeGeometry, setExtrudedTreeGeometry] =
     useState<ExtrudeGeometry>();
-  const [extrudedTree02GeometryLoading, setExtrudedTree02GeometryLoading] =
+  const [extrudedTreeGeometryLoading, setExtrudedTreeGeometryLoading] =
     useState<boolean>(true);
-  const [extrudedTree02GeometryError, setExtrudedTree02GeometryError] =
+  const [extrudedTreeGeometryError, setExtrudedTreeGeometryError] =
     useState<Error>();
 
   const [corrugatedBoardGeometry, setCorrugatedBoardGeometry] =
@@ -43,26 +39,22 @@ export const CardboardTree02 = ({ location }: GamePieceProps) => {
   const [corrugatedBoardGeometryError, setCorrugatedBoardGeometryError] =
     useState<Error>();
 
-  const [lineGeometry, setLineGeometry] = useState<BufferGeometry>();
-  const [lineGeometryLoading, setLineGeometryLoading] = useState<boolean>(true);
-  const [lineGeometryError, setLineGeometryError] = useState<Error>();
-
   useEffect(() => {
     // Add Export Tool to UI.
-    addExportTool(meshRef.current as Mesh, document);
+    // addExportTool(meshRef.current as Mesh, document);
 
     // Load the extruded tree geometry.s
-    createExtrudedTree02Geometry()
+    createExtrudedTreeGeometry()
       .then((geometry) => {
-        setExtrudedTree02Geometry(geometry);
+        setExtrudedTreeGeometry(geometry);
       })
       .catch((err) => {
         if (err instanceof Error) {
-          setExtrudedTree02GeometryError(err);
+          setExtrudedTreeGeometryError(err);
         }
       })
       .finally(() => {
-        setExtrudedTree02GeometryLoading(false);
+        setExtrudedTreeGeometryLoading(false);
       });
 
     // Load the corrugated board geometry.
@@ -90,22 +82,9 @@ export const CardboardTree02 = ({ location }: GamePieceProps) => {
       material={CARDBOARD_MATERIAL}
       position={POSITION}
     >
-      {LINES.map((line, index) => (
-        <Line
-          start={new Vector3(-1, line, 1)}
-          end={new Vector3(1, line, -1)}
-          key={index}
-        />
-      ))}
-
-      {/* <mesh>
-        <sphereGeometry args={[1, 32, 32]} />
-      </mesh> */}
-
       <Geometry>
         <Base geometry={corrugatedBoardGeometry} />
-        <Intersection geometry={extrudedTree02Geometry} />
-        {/* <Addition geometry={lineGeometry} /> */}
+        <Intersection geometry={extrudedTreeGeometry} />
       </Geometry>
     </mesh>
   );
